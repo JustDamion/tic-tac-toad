@@ -57,43 +57,33 @@ const gameController = (() => {
     }
 
     const checkForWinner = () => {
-        const board = gameBoard.getBoard();
-        let boardState = "";
-        let moveAvailable = false;
-
-        for (let row = 0; row < board.length; row++) {
-            for (let column = 0; column < board.length; column++) {
-                if (board[row][column] === null) moveAvailable = true;
-
-                if (board[row][column] === activePlayer.marker) {
-                    boardState += 1;
-                } else {
-                    boardState += 0;
-                }
-            }
-        }
-
-        if (!moveAvailable) {
-            console.log("GAME TIED");
-            return;
-        }
-
         /* Winning patterns
-        // Conversion from left to right:
-        // X O O
-        // O X O
-        // O O X
-        // = 100 010 001
+        // 256 | 128 | 64
+        // ----+-----+---
+        //  32 |  16 |  8
+        // ----+-----+---
+        //   4 |   2 |  1
+        //
+        // First row win = 256 + 128 + 64 = 448
         */
+        const board = gameBoard.getBoard().flat();
+        const boardState = board.map(cell => (cell === activePlayer.marker) ? "1" : "0");
+        const binaryBoardState = parseInt(boardState.join(''), 2);
+
         const winningPatterns = [
-            "111000000", "000111000", "000000111", // Row patterns
-            "100100100", "010010010", "001001001", // Column patterns
-            "100010001", "001010100" // Diagonal patterns
+            448, 56, 7, // Row patterns
+            292, 146, 73, // Column patterns
+            273, 84 // Diagonal patterns
         ];
 
-        if (winningPatterns.includes(boardState)) {
+        if (winningPatterns.includes(binaryBoardState)) {
             console.log(`${activePlayer.name} WINS`);
             return { activePlayer }
+        }
+
+        if (!board.includes(null)) {
+            console.log("GAME TIED");
+            return;
         }
     }
 
