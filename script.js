@@ -15,14 +15,14 @@ const gameBoard = (() => {
     for (let i = 0; i < size; i++) {
         board[i] = []
         for (let j = 0; j < size; j++) {
-            board[i].push([]);
+            board[i].push(null);
         }
     }
 
     const getBoard = () => board;
 
     const placeMarker = (row, column, player) => {
-        if (board[row][column] !== []) {
+        if (board[row][column] === null) {
             board[row][column] = player.marker;
             return true;
         }
@@ -50,7 +50,6 @@ const gameController = (() => {
 
     const playRound = (row, column) => {
         gameBoard.placeMarker(row, column, activePlayer)
-        console.log(`${activePlayer.name} placed ${activePlayer.marker} at ${row}, ${column}`);
         gameBoard.printBoard();
 
         checkForWinner();
@@ -60,14 +59,23 @@ const gameController = (() => {
     const checkForWinner = () => {
         const board = gameBoard.getBoard();
         let boardState = "";
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board.length; j++) {
-                if (board[i][j] === activePlayer.marker) {
+        let moveAvailable = false;
+
+        for (let row = 0; row < board.length; row++) {
+            for (let column = 0; column < board.length; column++) {
+                if (board[row][column] === null) moveAvailable = true;
+
+                if (board[row][column] === activePlayer.marker) {
                     boardState += 1;
                 } else {
                     boardState += 0;
                 }
             }
+        }
+
+        if (!moveAvailable) {
+            console.log("GAME TIED");
+            return;
         }
 
         /* Winning patterns
@@ -93,6 +101,14 @@ const gameController = (() => {
 
 gameController.playRound(0, 0);
 gameController.playRound(1, 1);
-gameController.playRound(0, 1);
+
+gameController.playRound(1, 0);
 gameController.playRound(1, 2);
+
+gameController.playRound(2, 2);
+gameController.playRound(2, 0);
+
 gameController.playRound(0, 2);
+gameController.playRound(0, 1);
+
+gameController.playRound(2, 1);
