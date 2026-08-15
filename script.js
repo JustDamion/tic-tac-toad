@@ -39,14 +39,19 @@ const gameBoard = (() => {
 
 const gameController = (() => {
     let player1 = new Player("Player One", 30, "X");
-    let player2 = new Player("Player Two", 30, "O");
-
-    const updatePlayer1 = (name, health, marker) => {
-        player1 = new Player(name, health, marker);
-    }
+    const player2 = new Player("Player Two", 30, "O");
 
     let activePlayer = player1;
     let inActivePlayer = player2;
+
+    const setActivePlayer = (player) => {
+        activePlayer = player;
+    }
+
+    const updatePlayer1 = (name, health, marker) => {
+        player1 = new Player(name, health, marker);
+        setActivePlayer(player1);
+    }
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player1 ? player2 : player1;
@@ -133,23 +138,22 @@ const screenController = (() => {
 
         const championForm = document.querySelector(".champion__form");
         const formData = new FormData(championForm);
-        let champStats = {}
+        let champInfo = {}
 
         switch (formData.get("champion")) {
             case "champ1":
-                champStats = { name: "Champ 1", health: 30, marker: "X" }
+                champInfo = { name: "Champ 1", health: 30, marker: "X" }
                 break;
             case "champ2":
-                champStats = { name: "Champ 2", health: 50, marker: "X" }
+                champInfo = { name: "Champ 2", health: 50, marker: "X" }
                 break;
             case "champ3":
-                champStats = { name: "Champ 3", health: 100, marker: "X" }
+                champInfo = { name: "Champ 3", health: 100, marker: "X" }
                 break;
         }
 
-        console.log(champStats);
-
-        gameController.updatePlayer1(champStats.name, champStats.health, champStats.marker)
+        gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker)
+        updateScreen();
     }
 
     const handleBoardClick = (event) => {
@@ -164,5 +168,4 @@ const screenController = (() => {
 
     champSelectButton.addEventListener("click", handleChampionSubmit);
     boardDiv.addEventListener("click", handleBoardClick);
-    updateScreen();
 })();
