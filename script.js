@@ -1,10 +1,10 @@
-function Player(name, score, marker) {
+function Player(name, health, marker) {
     if (!new.target) {
         throw Error("You must use the 'new' operator to call the constructor");
     }
 
     this.name = name;
-    this.score = score;
+    this.health = health;
     this.marker = marker;
 }
 
