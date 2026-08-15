@@ -50,10 +50,13 @@ const gameController = (() => {
     const getActivePlayer = () => activePlayer;
 
     const playRound = (row, column) => {
-        gameBoard.placeMarker(row, column, activePlayer)
+        const success = gameBoard.placeMarker(row, column, activePlayer);
+        if (!success) return false;
 
         checkForWinner();
         switchPlayerTurn();
+
+        return true;
     }
 
     const checkForWinner = () => {
@@ -95,7 +98,7 @@ const screenController = (() => {
 
     const updateScreen = () => {
         const playerTurnText = document.querySelector(".player__turn");
-        playerTurnText.textContent = `Turn: ${gameController.getActivePlayer().name}`
+        playerTurnText.textContent = `Turn: ${gameController.getActivePlayer().name} (${gameController.getActivePlayer().marker})`
 
         boardDiv.textContent = "";
         const board = gameBoard.getBoard();
