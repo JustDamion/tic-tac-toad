@@ -10,9 +10,8 @@ function Player(name, score, marker) {
 
 const gameBoard = (() => {
     const size = 3;
-    const board = [];
-    setupBoard();
-
+    let board = [];
+    
     const getBoard = () => board;
 
     const placeMarker = (row, column, player) => {
@@ -38,6 +37,7 @@ const gameBoard = (() => {
         }
     }
 
+    setupBoard();
     return { getBoard, placeMarker, printBoard, setupBoard };
 })();
 
