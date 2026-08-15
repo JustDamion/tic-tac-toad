@@ -11,7 +11,7 @@ function Player(name, score, marker) {
 const gameBoard = (() => {
     const size = 3;
     let board = [];
-    
+
     const getBoard = () => board;
 
     const placeMarker = (row, column, player) => {
@@ -21,10 +21,6 @@ const gameBoard = (() => {
         }
         return false;
     }
-
-    const printBoard = () => {
-        console.table(board);
-    };
 
     const setupBoard = () => {
         board = [];
@@ -38,7 +34,7 @@ const gameBoard = (() => {
     }
 
     setupBoard();
-    return { getBoard, placeMarker, printBoard, setupBoard };
+    return { getBoard, placeMarker, setupBoard };
 })();
 
 const gameController = (() => {
@@ -55,7 +51,6 @@ const gameController = (() => {
 
     const playRound = (row, column) => {
         gameBoard.placeMarker(row, column, activePlayer)
-        gameBoard.printBoard();
 
         checkForWinner();
         switchPlayerTurn();
@@ -90,30 +85,50 @@ const gameController = (() => {
         // O O X
         // = 100 010 001
         */
-        const winningCombos = [
+        const winningPatterns = [
             "111000000", "000111000", "000000111", // Row patterns
             "100100100", "010010010", "001001001", // Column patterns
             "100010001", "001010100" // Diagonal patterns
         ];
 
-        if (winningCombos.includes(boardState)) {
+        if (winningPatterns.includes(boardState)) {
             console.log(`${activePlayer.name} WINS`);
+            return { activePlayer }
         }
     }
 
     return { getActivePlayer, playRound };
 })();
 
-gameController.playRound(0, 0);
-gameController.playRound(1, 1);
+const screenController = (() => {
+    const boardDiv = document.querySelector(".board");
 
-gameController.playRound(1, 0);
-gameController.playRound(1, 2);
+    const updateScreen = () => {
+        boardDiv.textContent = "";
+        const board = gameBoard.getBoard();
 
-gameController.playRound(2, 2);
-gameController.playRound(2, 0);
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, columnIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.setAttribute("class", "board__cell");
+                cellButton.setAttribute("data-row", rowIndex);
+                cellButton.setAttribute("data-column", columnIndex);
+                cellButton.textContent = cell;
+                boardDiv.appendChild(cellButton);
+            });
+        });
+    }
 
-gameController.playRound(0, 2);
-gameController.playRound(0, 1);
+    const handleClick = (event) => {
+        const selectedRow = event.target.dataset.row;
+        const selectedColumn = event.target.dataset.column;
 
-gameController.playRound(2, 1);
+        if (!selectedRow || !selectedColumn) return;
+
+        gameController.playRound(selectedRow, selectedColumn);
+        updateScreen();
+    }
+
+    boardDiv.addEventListener("click", handleClick);
+    updateScreen();
+})();
