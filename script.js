@@ -70,13 +70,13 @@ const gameController = (() => {
         const boardState = board.map(cell => (cell === activePlayer.marker) ? "1" : "0");
         const binaryBoardState = parseInt(boardState.join(''), 2);
 
-        const winningPatterns = [
+        const WINNING_PATTERNS = [
             448, 56, 7, // Row patterns
             292, 146, 73, // Column patterns
             273, 84 // Diagonal patterns
         ];
 
-        if (winningPatterns.includes(binaryBoardState)) {
+        if (WINNING_PATTERNS.some(pattern => (binaryBoardState & pattern) === pattern)) {
             console.log(`${activePlayer.name} WINS`);
             return { activePlayer }
         }
@@ -94,6 +94,9 @@ const screenController = (() => {
     const boardDiv = document.querySelector(".board");
 
     const updateScreen = () => {
+        const playerTurnText = document.querySelector(".player__turn");
+        playerTurnText.textContent = `Turn: ${gameController.getActivePlayer().name}`
+
         boardDiv.textContent = "";
         const board = gameBoard.getBoard();
 

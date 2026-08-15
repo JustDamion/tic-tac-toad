@@ -70,6 +70,12 @@ h6 {
 
 /* END CSS RESET */
 
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, 150px);
