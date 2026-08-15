@@ -38,13 +38,19 @@ const gameBoard = (() => {
 })();
 
 const gameController = (() => {
-    const player1 = new Player("Player One", 0, "X");
-    const player2 = new Player("Player Two", 0, "O");
+    let player1 = new Player("Player One", 30, "X");
+    let player2 = new Player("Player Two", 30, "O");
+
+    const updatePlayer1 = (name, health, marker) => {
+        player1 = new Player(name, health, marker);
+    }
 
     let activePlayer = player1;
+    let inActivePlayer = player2;
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player1 ? player2 : player1;
+        inActivePlayer = inActivePlayer === player2 ? player1 : player2;
     }
 
     const getActivePlayer = () => activePlayer;
@@ -80,21 +86,28 @@ const gameController = (() => {
         ];
 
         if (WINNING_PATTERNS.some(pattern => (binaryBoardState & pattern) === pattern)) {
-            console.log(`${activePlayer.name} WINS`);
-            return { activePlayer }
+            inActivePlayer.health -= 10;
+            if (inActivePlayer.health <= 0) {
+                console.log(`${activePlayer.name} WINS`)
+                return { game: "over" };
+            }
+
+            gameBoard.setupBoard();
+            return { game: "continue" }
         }
 
         if (!board.includes(null)) {
-            console.log("GAME TIED");
-            return;
+            gameBoard.setupBoard();
+            return { game: "continue" };
         }
     }
 
-    return { getActivePlayer, playRound };
+    return { getActivePlayer, playRound, updatePlayer1 };
 })();
 
 const screenController = (() => {
     const boardDiv = document.querySelector(".board");
+    const champSelectButton = document.querySelector(".champion-form__button");
 
     const updateScreen = () => {
         const playerTurnText = document.querySelector(".player__turn");
@@ -115,7 +128,31 @@ const screenController = (() => {
         });
     }
 
-    const handleClick = (event) => {
+    const handleChampionSubmit = (event) => {
+        event.preventDefault();
+
+        const championForm = document.querySelector(".champion__form");
+        const formData = new FormData(championForm);
+        let champStats = {}
+
+        switch (formData.get("champion")) {
+            case "champ1":
+                champStats = { name: "Champ 1", health: 30, marker: "X" }
+                break;
+            case "champ2":
+                champStats = { name: "Champ 2", health: 50, marker: "X" }
+                break;
+            case "champ3":
+                champStats = { name: "Champ 3", health: 100, marker: "X" }
+                break;
+        }
+
+        console.log(champStats);
+
+        gameController.updatePlayer1(champStats.name, champStats.health, champStats.marker)
+    }
+
+    const handleBoardClick = (event) => {
         const selectedRow = event.target.dataset.row;
         const selectedColumn = event.target.dataset.column;
 
@@ -125,6 +162,7 @@ const screenController = (() => {
         updateScreen();
     }
 
-    boardDiv.addEventListener("click", handleClick);
+    champSelectButton.addEventListener("click", handleChampionSubmit);
+    boardDiv.addEventListener("click", handleBoardClick);
     updateScreen();
 })();

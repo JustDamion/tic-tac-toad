@@ -17,10 +17,25 @@
     </header>
 
     <main class="main">
-        <section>
-            <form action="">
-                <label for="player-name">Player Name:</label>
-                <input type="text" name="player-name" id="">
+        <section class="champion-section">
+            <form class="champion__form" action="">
+                <fieldset class="champion-form__fieldset">
+                    <legend class="champion-form__legend">CHOOSE YOUR CHAMPION</legend>
+
+                    <div class="champion">
+                        <input type="radio" id="champ1" name="champion" value="champ1" checked>
+                        <label for="champ1">Champ 30</label>
+                    </div>
+                    <div class="champion">
+                        <input type="radio" id="champ2" name="champion" value="champ2" checked>
+                        <label for="champ2">Champ 50</label>
+                    </div>
+                    <div class="champion">
+                        <input type="radio" id="champ3" name="champion" value="champ3" checked>
+                        <label for="champ3">Champ 100</label>
+                    </div>
+                </fieldset>
+                <button class="champion-form__button" type="submit">Select Champion</button>
             </form>
         </section>
 
