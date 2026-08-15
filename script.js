@@ -11,13 +11,7 @@ function Player(name, score, marker) {
 const gameBoard = (() => {
     const size = 3;
     const board = [];
-
-    for (let i = 0; i < size; i++) {
-        board[i] = []
-        for (let j = 0; j < size; j++) {
-            board[i].push(null);
-        }
-    }
+    setupBoard();
 
     const getBoard = () => board;
 
@@ -33,7 +27,18 @@ const gameBoard = (() => {
         console.table(board);
     };
 
-    return { getBoard, placeMarker, printBoard };
+    const setupBoard = () => {
+        board = [];
+
+        for (let i = 0; i < size; i++) {
+            board[i] = []
+            for (let j = 0; j < size; j++) {
+                board[i].push(null);
+            }
+        }
+    }
+
+    return { getBoard, placeMarker, printBoard, setupBoard };
 })();
 
 const gameController = (() => {
