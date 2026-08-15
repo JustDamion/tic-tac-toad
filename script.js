@@ -111,10 +111,11 @@ const gameController = (() => {
 })();
 
 const screenController = (() => {
-    const boardDiv = document.querySelector(".board");
+    const boardDiv = document.getElementById("board");
     const champSelectButton = document.querySelector(".champion-form__button");
 
     const updateScreen = () => {
+        boardDiv.setAttribute("class", "board");
         const playerTurnText = document.querySelector(".player__turn");
         playerTurnText.textContent = `Turn: ${gameController.getActivePlayer().name} (${gameController.getActivePlayer().marker})`
 
