@@ -90,6 +90,12 @@ const gameController = (() => {
             273, 84 // Diagonal patterns
         ];
 
+        // Bitwise & comparison
+        // 448 = 000111000000
+        // 464 = 000111010000
+        //
+        // 464 (binaryBoardState) & 448 (patter)
+        // 000111000000 = 448
         if (WINNING_PATTERNS.some(pattern => (binaryBoardState & pattern) === pattern)) {
             inActivePlayer.health -= 10;
             if (inActivePlayer.health <= 0) {
