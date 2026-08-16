@@ -137,6 +137,7 @@ const screenController = (() => {
     const handleChampionSubmit = (event) => {
         event.preventDefault();
 
+        const championSection = document.querySelector(".champion-section");
         const championForm = document.querySelector(".champion__form");
         const formData = new FormData(championForm);
         let champInfo = {}
@@ -153,7 +154,8 @@ const screenController = (() => {
                 break;
         }
 
-        gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker)
+        gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker);
+        championSection.textContent = "";
         updateScreen();
     }
 

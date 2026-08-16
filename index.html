@@ -12,7 +12,19 @@
 <body>
     <header class="header">
         <div class="header__branding">
-            <h1 class="header__title">Tic-Tac-Toe</h1>
+            <h1 class="header__title">Tic-Tac-Toad</h1>
+        </div>
+        <div class="header__player-info">
+            <div class="header__player1">
+                <h2 class="player1__name">Player 1</h2>
+                <label for="player1-health">Health:</label>
+                <progress class="player1__health" id="player1-health" max="30" value="30"></progress>
+            </div>
+            <div class="header__player2">
+                <h2 class="player2__name">Enemy</h2>
+                <label for="player2-health">Health:</label>
+                <progress class="player2__health" id="player2-health" max="30" value="20"></progress>
+            </div>
         </div>
     </header>
 

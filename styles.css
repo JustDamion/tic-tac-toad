@@ -74,9 +74,20 @@ h6 {
 
 .header {
     display: flex;
+    flex-direction: column;
     padding: 12px 24px;
     color: white;
     background-color: rgb(40, 40, 40);
+}
+
+.header__branding {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.header__player-info {
+    display: flex;
+    justify-content: space-between;
 }
 
 .main {
