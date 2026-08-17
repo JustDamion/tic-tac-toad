@@ -122,8 +122,12 @@ const gameController = (() => {
 const screenController = (() => {
     const boardDiv = document.getElementById("board");
     const champSelectButton = document.querySelector(".champion-form__button");
+    const playerOneName = document.querySelector(".player1__name");
+
     const playerOneHealthProgress = document.querySelector(".player1__health");
     const playerTwoHealthProgress = document.querySelector(".player2__health");
+    const playerOneHealthLabel = document.querySelector(".player1__health-label")
+    const playerTwoHealthLabel = document.querySelector(".player2__health-label");
 
     const updateHeaderPlayerInfo = () => {
         const playerOneHealth = gameController.getPlayerOne().health;
@@ -131,6 +135,9 @@ const screenController = (() => {
 
         playerOneHealthProgress.setAttribute("value", playerOneHealth);
         playerTwoHealthProgress.setAttribute("value", playerTwoHealth);
+
+        playerOneHealthLabel.textContent = `${playerOneHealth} HP`;
+        playerTwoHealthLabel.textContent = `${playerTwoHealth} HP`;
     }
 
     const updateScreen = () => {
@@ -165,19 +172,20 @@ const screenController = (() => {
 
         switch (formData.get("champion")) {
             case "champ1":
-                champInfo = { name: "Champ 1", health: 30, marker: "X" }
+                champInfo = { name: "Danny DaviToad", health: 30, marker: "X" }
                 break;
             case "champ2":
-                champInfo = { name: "Champ 2", health: 50, marker: "X" }
+                champInfo = { name: "James Pond", health: 50, marker: "X" }
                 break;
             case "champ3":
-                champInfo = { name: "Champ 3", health: 100, marker: "X" }
+                champInfo = { name: "Gerald", health: 100, marker: "X" }
                 break;
         }
 
         gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker);
         championSection.textContent = "";
         playerOneHealthProgress.setAttribute("max", champInfo.health);
+        playerOneName.textContent = champInfo.name;
         updateScreen();
     }
 

@@ -90,6 +90,10 @@ h6 {
     justify-content: space-between;
 }
 
+.header__player1 {
+    text-align: end;
+}
+
 .main {
     display: flex;
     flex-direction: column;
