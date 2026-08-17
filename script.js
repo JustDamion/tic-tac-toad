@@ -39,7 +39,7 @@ const gameBoard = (() => {
 
 const gameController = (() => {
     let player1 = new Player("Player One", 30, "X");
-    const player2 = new Player("Player Two", 30, "O");
+    const player2 = new Player("Player Two", 50, "O");
 
     let activePlayer = player1;
     let inActivePlayer = player2;
@@ -58,7 +58,10 @@ const gameController = (() => {
         inActivePlayer = inActivePlayer === player2 ? player1 : player2;
     }
 
+    const getPlayerOne = () => player1;
+    const getPlayerTwo = () => player2;
     const getActivePlayer = () => activePlayer;
+    const getInactivePlayer = () => inActivePlayer;
 
     const playRound = (row, column) => {
         const success = gameBoard.placeMarker(row, column, activePlayer);
@@ -113,12 +116,22 @@ const gameController = (() => {
         }
     }
 
-    return { getActivePlayer, playRound, updatePlayer1 };
+    return { getActivePlayer, getInactivePlayer, getPlayerOne, getPlayerTwo, playRound, updatePlayer1 };
 })();
 
 const screenController = (() => {
     const boardDiv = document.getElementById("board");
     const champSelectButton = document.querySelector(".champion-form__button");
+    const playerOneHealthProgress = document.querySelector(".player1__health");
+    const playerTwoHealthProgress = document.querySelector(".player2__health");
+
+    const updateHeaderPlayerInfo = () => {
+        const playerOneHealth = gameController.getPlayerOne().health;
+        const playerTwoHealth = gameController.getPlayerTwo().health;
+
+        playerOneHealthProgress.setAttribute("value", playerOneHealth);
+        playerTwoHealthProgress.setAttribute("value", playerTwoHealth);
+    }
 
     const updateScreen = () => {
         boardDiv.setAttribute("class", "board");
@@ -138,6 +151,8 @@ const screenController = (() => {
                 boardDiv.appendChild(cellButton);
             });
         });
+
+        updateHeaderPlayerInfo();
     }
 
     const handleChampionSubmit = (event) => {
@@ -162,6 +177,7 @@ const screenController = (() => {
 
         gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker);
         championSection.textContent = "";
+        playerOneHealthProgress.setAttribute("max", champInfo.health);
         updateScreen();
     }
 
