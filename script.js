@@ -127,7 +127,6 @@ const botController = (() => {
     const playRandomMove = () => {
         const board = gameBoard.getBoard();
         const emptySpaces = [];
-        console.log(emptySpaces);
 
         board.forEach((row, rowIndex) => {
             row.forEach((cell, columnIndex) => {
