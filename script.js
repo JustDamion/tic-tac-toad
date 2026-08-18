@@ -39,7 +39,7 @@ const gameBoard = (() => {
 
 const gameController = (() => {
     let player1 = new Player("Player One", 30, "X");
-    const player2 = new Player("Player Two", 50, "O");
+    const player2 = new Player("Player Two", 50, "🍄‍🟫");
 
     let activePlayer = player1;
     let inActivePlayer = player2;
@@ -198,13 +198,13 @@ const screenController = (() => {
 
         switch (formData.get("champion")) {
             case "champ1":
-                champInfo = { name: "Danny DaviToad", health: 30, marker: "X" }
+                champInfo = { name: "Danny DaviToad", health: 30, marker: "🍄" }
                 break;
             case "champ2":
-                champInfo = { name: "James Pond", health: 50, marker: "X" }
+                champInfo = { name: "James Pond", health: 50, marker: "🍄" }
                 break;
             case "champ3":
-                champInfo = { name: "Gerald", health: 100, marker: "X" }
+                champInfo = { name: "Gerald", health: 100, marker: "🍄" }
                 break;
         }
 
