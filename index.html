@@ -18,7 +18,7 @@
             <div class="header__player1">
                 <h2 class="player1__name">Player 1</h2>
                 <label class="player1__health-label" for="player1-health">50 HP</label>
-                <progress class="player1__health" id="player1-health" max="30" value="30"></progress>
+                <progress class="player1__health" id="player1-health" max="50" value="50"></progress>
             </div>
             <div class="header__player2">
                 <h2 class="player2__name">Enemy</h2>
@@ -38,15 +38,15 @@
                         <div class="champion">
                             <label class="champion__label" for="champ1">
                                 <img class="champion__portrait" src="images/Portrait_Placeholder.png" alt="">
-                                <input class="champion__select" type="radio" id="champ1" name="champion" value="champ1"
-                                    checked>
+                                <input class="champion__select" type="radio" id="champ1" name="champion" value="champ1">
                                 Danny DaviToad (30 HP)
                             </label>
                         </div>
                         <div class="champion">
                             <label class="champion__label" for="champ2">
                                 <img class="champion__portrait" src="images/Portrait_Placeholder.png" alt="">
-                                <input class="champion__select" type="radio" id="champ2" name="champion" value="champ2">
+                                <input class="champion__select" type="radio" id="champ2" name="champion" value="champ2"
+                                    checked>
                                 James Pond (50 HP)
                             </label>
                         </div>
@@ -68,6 +68,13 @@
         </div>
 
         <section id="board"></section>
+
+        <dialog class="game-over-modal">
+            <h2 class="game-over__title">You win!</h2>
+            <div class="game-over__actions">
+                <button class="game-over__restart-button">Play again?</button>
+            </div>
+        </dialog>
     </main>
 
     <footer class="footer"></footer>

@@ -38,8 +38,8 @@ const gameBoard = (() => {
 })();
 
 const gameController = (() => {
-    let player1 = new Player("Player One", 30, "X");
-    const player2 = new Player("Player Two", 50, "🍄‍🟫");
+    let player1 = new Player("Player One", 50, "X");
+    let player2 = new Player("Player Two", 50, "🍄‍🟫");
 
     let activePlayer = player1;
     let inActivePlayer = player2;
@@ -71,10 +71,14 @@ const gameController = (() => {
         const success = gameBoard.placeMarker(row, column, activePlayer);
         if (!success) return false;
 
-        checkForWinner();
-        switchPlayerTurn();
+        const isWinner = checkForWinner();
 
-        return true;
+        if (isWinner) {
+            return { game: "over", winner: activePlayer.name };
+        }
+
+        switchPlayerTurn();
+        return { game: "continue", winner: null };
     }
 
     const checkForWinner = () => {
@@ -106,21 +110,30 @@ const gameController = (() => {
         if (WINNING_PATTERNS.some(pattern => (binaryBoardState & pattern) === pattern)) {
             inActivePlayer.health -= 10;
             if (inActivePlayer.health <= 0) {
-                console.log(`${activePlayer.name} WINS`)
-                return { game: "over" };
+                return true;
             }
 
             gameBoard.setupBoard();
-            return { game: "continue" }
+            return false;
         }
 
         if (!board.includes(null)) {
             gameBoard.setupBoard();
-            return { game: "continue" };
+            return false;
         }
     }
 
-    return { getActivePlayer, getInactivePlayer, getPlayerOne, getPlayerTwo, playRound, updatePlayer1 };
+    const restartGame = () => {
+        player1 = new Player("Player One", 50, "X");
+        player2 = new Player("Player Two", 50, "🍄‍🟫");
+        activePlayer = player1;
+        inActivePlayer = player2;
+
+        gameBoard.setupBoard();
+        console.table(gameBoard.getBoard());
+    }
+
+    return { getActivePlayer, getInactivePlayer, getPlayerOne, getPlayerTwo, playRound, updatePlayer1, restartGame };
 })();
 
 const botController = (() => {
@@ -147,13 +160,18 @@ const botController = (() => {
 
 const screenController = (() => {
     const boardDiv = document.getElementById("board");
+    const championSection = document.querySelector(".champion-section");
     const champSelectButton = document.querySelector(".champion-form__button");
-    const playerOneName = document.querySelector(".player1__name");
 
+    const playerTurnText = document.querySelector(".player__turn");
+
+    const playerOneName = document.querySelector(".player1__name");
     const playerOneHealthProgress = document.querySelector(".player1__health");
     const playerTwoHealthProgress = document.querySelector(".player2__health");
     const playerOneHealthLabel = document.querySelector(".player1__health-label")
     const playerTwoHealthLabel = document.querySelector(".player2__health-label");
+
+    const gameOverRestartButton = document.querySelector(".game-over__restart-button");
 
     const updateHeaderPlayerInfo = () => {
         const playerOneHealth = gameController.getPlayerOne().health;
@@ -168,7 +186,6 @@ const screenController = (() => {
 
     const updateScreen = () => {
         boardDiv.setAttribute("class", "board");
-        const playerTurnText = document.querySelector(".player__turn");
         playerTurnText.textContent = `Turn: ${gameController.getActivePlayer().name} (${gameController.getActivePlayer().marker})`
 
         boardDiv.textContent = "";
@@ -188,10 +205,21 @@ const screenController = (() => {
         updateHeaderPlayerInfo();
     }
 
+    const showGameOverModal = (winningPlayer) => {
+        const gameOverModal = document.querySelector(".game-over-modal");
+        const gameOverTitle = document.querySelector(".game-over__title");
+        gameOverTitle.textContent = `${winningPlayer} Wins!`;
+        gameOverModal.showModal();
+    }
+
+    const hideGameOverModal = () => {
+        const gameOverModal = document.querySelector(".game-over-modal");
+        gameOverModal.close();
+    }
+
     const handleChampionSubmit = (event) => {
         event.preventDefault();
 
-        const championSection = document.querySelector(".champion-section");
         const championForm = document.querySelector(".champion__form");
         const formData = new FormData(championForm);
         let champInfo = {}
@@ -209,8 +237,7 @@ const screenController = (() => {
         }
 
         gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker);
-        championSection.textContent = "";
-        championSection.removeAttribute("class");
+        championSection.setAttribute("style", "display: none;");
         playerOneHealthProgress.setAttribute("max", champInfo.health);
         playerOneName.textContent = champInfo.name;
         updateScreen();
@@ -222,10 +249,27 @@ const screenController = (() => {
 
         if (!selectedRow || !selectedColumn) return;
 
-        gameController.playRound(selectedRow, selectedColumn);
+        const roundResult = gameController.playRound(selectedRow, selectedColumn);
         updateScreen();
+
+        if (roundResult.game === "over") {
+            showGameOverModal(roundResult.winner)
+        }
     }
 
+    const handleRestartClick = (event) => {
+        hideGameOverModal();
+        gameController.restartGame();
+        boardDiv.removeAttribute("class");
+        boardDiv.textContent = "";
+        playerTurnText.textContent = "";
+        championSection.setAttribute("style", "display: block;");
+        playerOneName.textContent = "Player 1";
+        playerOneHealthProgress.setAttribute("max", "50")
+        updateHeaderPlayerInfo();
+    }
+
+    gameOverRestartButton.addEventListener("click", handleRestartClick);
     champSelectButton.addEventListener("click", handleChampionSubmit);
     boardDiv.addEventListener("click", handleBoardClick);
 })();
