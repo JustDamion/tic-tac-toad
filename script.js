@@ -210,6 +210,7 @@ const screenController = (() => {
 
         gameController.updatePlayer1(champInfo.name, champInfo.health, champInfo.marker);
         championSection.textContent = "";
+        championSection.removeAttribute("class");
         playerOneHealthProgress.setAttribute("max", champInfo.health);
         playerOneName.textContent = champInfo.name;
         updateScreen();
