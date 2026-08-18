@@ -56,6 +56,10 @@ const gameController = (() => {
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player1 ? player2 : player1;
         inActivePlayer = inActivePlayer === player2 ? player1 : player2;
+
+        if (inActivePlayer === player1) {
+            botController.playRandomMove();
+        }
     }
 
     const getPlayerOne = () => player1;
@@ -117,6 +121,29 @@ const gameController = (() => {
     }
 
     return { getActivePlayer, getInactivePlayer, getPlayerOne, getPlayerTwo, playRound, updatePlayer1 };
+})();
+
+const botController = (() => {
+    const playRandomMove = () => {
+        const board = gameBoard.getBoard();
+        const emptySpaces = [];
+        console.log(emptySpaces);
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, columnIndex) => {
+                if (cell === null) {
+                    emptySpaces.push({ rowIndex, columnIndex });
+                }
+            });
+        });
+
+        if (emptySpaces.length !== 0) {
+            const randomSpace = Math.floor(Math.random() * emptySpaces.length);
+            gameController.playRound(emptySpaces[randomSpace].rowIndex, emptySpaces[randomSpace].columnIndex);
+        }
+    }
+
+    return { playRandomMove }
 })();
 
 const screenController = (() => {
