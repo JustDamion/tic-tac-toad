@@ -139,7 +139,7 @@ h6 {
 }
 
 .champion__portrait--selected {
-    border: 4px solid greenyellow;
+    border: 4px solid #86c922;
     background-color: #0000004d;
 }
 
@@ -150,11 +150,12 @@ h6 {
 }
 
 .champion-form__button {
+    font-weight: bold;
     font-size: 1.1rem;
     padding: 8px 16px;
     margin-top: 32px;
     cursor: pointer;
-    background-color: rgb(158, 73, 37);
+    background-color: #86c922;
     border: none;
 }
 
