@@ -161,7 +161,9 @@ const botController = (() => {
 const screenController = (() => {
     const boardDiv = document.getElementById("board");
     const championSection = document.querySelector(".champion-section");
+    const championsDiv = document.querySelector(".champions");
     const champSelectButton = document.querySelector(".champion-form__button");
+    let selectedChamp = document.querySelector(".champion__portrait--selected");
 
     const playerTurnText = document.querySelector(".player__turn");
 
@@ -217,6 +219,13 @@ const screenController = (() => {
         gameOverModal.close();
     }
 
+    const handleChampionSelect = (event) => {
+        const championImage = event.target.previousElementSibling;
+        championImage.setAttribute("class", "champion__portrait--selected");
+        selectedChamp.setAttribute("class", "champion__portrait");
+        selectedChamp = championImage;
+    }
+
     const handleChampionSubmit = (event) => {
         event.preventDefault();
 
@@ -229,7 +238,7 @@ const screenController = (() => {
                 champInfo = { name: "Danny DaviToad", health: 30, marker: "🍄" }
                 break;
             case "champ2":
-                champInfo = { name: "James Pond", health: 50, marker: "🍄" }
+                champInfo = { name: "Lilly", health: 50, marker: "🍄" }
                 break;
             case "champ3":
                 champInfo = { name: "Gerald", health: 100, marker: "🍄" }
@@ -269,6 +278,7 @@ const screenController = (() => {
         updateHeaderPlayerInfo();
     }
 
+    championsDiv.addEventListener("change", handleChampionSelect);
     gameOverRestartButton.addEventListener("click", handleRestartClick);
     champSelectButton.addEventListener("click", handleChampionSubmit);
     boardDiv.addEventListener("click", handleBoardClick);

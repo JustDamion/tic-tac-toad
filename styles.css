@@ -119,22 +119,40 @@ h6 {
     gap: 32px;
 }
 
+.champion__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .champion-form__legend {
     font-weight: bold;
     font-size: 2rem;
     margin-bottom: 16px;
 }
 
-.champion__portrait {
-    width: 300px;
+.champion__portrait,
+.champion__portrait--selected {
+    width: 100px;
+}
+
+.champion__portrait--selected {
+    border: 4px solid greenyellow;
+    background-color: #0000004d;
+}
+
+.champion__select {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .champion-form__button {
-    font-size: 1.2rem;
-    padding: 16px 32px;
+    font-size: 1.1rem;
+    padding: 8px 16px;
     margin-top: 32px;
     cursor: pointer;
-    background-color: brown;
+    background-color: rgb(158, 73, 37);
     border: none;
 }
 
